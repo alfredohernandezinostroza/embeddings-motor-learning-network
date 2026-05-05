@@ -6,3 +6,5 @@ __pycache__/
 **/bertopic_model*
 **/bertopic_model_*
 **/bertopic_model
+
+backups/
