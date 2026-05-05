@@ -1,0 +1,8 @@
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+__pycache__/
+
+**/bertopic_model*
+**/bertopic_model_*
+**/bertopic_model

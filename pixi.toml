@@ -1,0 +1,30 @@
+[workspace]
+authors = ["alfredohernandezinsotroza <alfredo.hernandez@ug.uchile.cl>"]
+channels = ["conda-forge"]
+name = "embeddings"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = ">=3.14.4,<3.15"
+ipykernel = ">=7.2.0,<8"
+pip = ">=26.0.1,<27"
+
+[pypi-dependencies]
+python-dotenv = "*"
+networkx = ">=3.6.1, <4"
+numpy = "*"
+pandas = ">=3.0.2, <4"
+scipy = "*"
+scikit-learn = ">=1.8.0, <2"
+seaborn = "*"
+bertopic = ">=0.15.0"
+transformers = ">=4.30.0"
+torch = ">=2.0.0"
+umap-learn = ">=0.5.3"
+hdbscan = ">=0.8.33"
+sentence-transformers = ">=2.2.0"
+tqdm = "*"
+adapters = ">=1.2.0, <2"
