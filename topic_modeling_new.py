@@ -48,13 +48,13 @@ from pathlib import Path
 
 DATA_DIR = Path("data")
 GRAPHML_FILE = DATA_DIR / "citation_network_selected.graphml"
-
+SUFFIX = "_new"
 
 # ── Configuration ──────────────────────────────────────────────────────────
 SPECTER2_MODEL   = "allenai/specter2_base"
-OUTPUT_GRAPHML   = DATA_DIR / "citation_network_with_topics_new.graphml"
+OUTPUT_GRAPHML   = DATA_DIR / f"citation_network_with_topics{SUFFIX}.graphml"
 EMBED_CACHE      = DATA_DIR / "embeddings_cache.npz"
-TOPIC_MODEL_DIR  = DATA_DIR / "bertopic_model_new_results"
+TOPIC_MODEL_DIR  = DATA_DIR / f"bertopic_model{SUFFIX}_results"
 FINGERPRINT_FILE = DATA_DIR / "graph_fingerprint.json"
 MIN_TOPIC_SIZE   = 15
 N_NEIGHBORS      = 15
@@ -200,14 +200,14 @@ print("\n[4/6] Applying BERTopic clustering...")
 topic_cache_hit = (
     cache_valid
     and TOPIC_MODEL_DIR.exists()
-    and (DATA_DIR / "document_topics.csv").exists()
+    and (DATA_DIR / f"document_topics{SUFFIX}.csv").exists()
     and not args.recompute
 )
 
 if topic_cache_hit:
     print(f"  Cache hit — loading BERTopic model from {TOPIC_MODEL_DIR}")
     topic_model = BERTopic.load(str(TOPIC_MODEL_DIR))
-    topics      = pd.read_csv(DATA_DIR / "document_topics.csv")["topic"].to_numpy()
+    topics      = pd.read_csv(DATA_DIR / f"document_topics{SUFFIX}")["topic"].to_numpy()
     topic_info  = topic_model.get_topic_info()
     print(f"  Loaded model with {len(topic_info) - 1} topics")
 else:
@@ -281,15 +281,15 @@ print("  Saved successfully!")
 # ── 7. Save Topic Artefacts ───────────────────────────────────────────────
 print("\n[Bonus] Saving topic information...")
 
-topic_info.to_csv(DATA_DIR / "topic_info.csv", index=False)
-print("  Saved topic_info.csv")
+topic_info.to_csv(DATA_DIR / f"topic_info{SUFFIX}.csv", index=False)
+print(f"  Saved topic_info{SUFFIX}.csv")
 
 pd.DataFrame({
     'node_id':  node_ids,
     'topic':    topics,
     'document': documents,
-}).to_csv(DATA_DIR / "document_topics.csv", index=False)
-print("  Saved document_topics.csv")
+}).to_csv(DATA_DIR / f"document_topics{SUFFIX}.csv", index=False)
+print(f"  Saved document_topics{SUFFIX}.csv")
 
 valid_topic_ids = topic_info[topic_info['Topic'] != -1]['Topic'].tolist()
 topic_words = []
@@ -302,8 +302,8 @@ for topic_id in valid_topic_ids:
             'scores':   " | ".join(f"{s:.4f}" for _, s in words),
         })
 
-pd.DataFrame(topic_words).to_csv(DATA_DIR / "topic_words.csv", index=False)
-print("  Saved topic_words.csv")
+pd.DataFrame(topic_words).to_csv(DATA_DIR / f"topic_words{SUFFIX}.csv", index=False)
+print(f"  Saved topic_words{SUFFIX}.csv")
 
 print("\n" + "=" * 80)
 print("Topic modeling complete!")
@@ -312,8 +312,8 @@ print(f"\nSummary:")
 print(f"  - Processed {len(documents):,} papers")
 print(f"  - Found {n_topics} topics")
 print(f"  - Updated graph saved to:          {OUTPUT_GRAPHML}")
-print(f"  - Topic info saved to:             {DATA_DIR / 'topic_info.csv'}")
-print(f"  - Document-topic mapping saved to: {DATA_DIR / 'document_topics.csv'}")
-print(f"  - Topic words saved to:            {DATA_DIR / 'topic_words.csv'}")
+print(f"  - Topic info saved to:             {DATA_DIR / f'topic_info{SUFFIX}.csv'}")
+print(f"  - Document-topic mapping saved to: {DATA_DIR / f'document_topics{SUFFIX}.csv'}")
+print(f"  - Topic words saved to:            {DATA_DIR / f'topic_words{SUFFIX}.csv'}")
 print(f"  - Embedding cache:                 {EMBED_CACHE}")
 print(f"  - BERTopic model cache:            {TOPIC_MODEL_DIR}")
