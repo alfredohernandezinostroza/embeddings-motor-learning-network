@@ -241,7 +241,7 @@ else:
 
     TOPIC_MODEL_DIR.mkdir(parents=True, exist_ok=True)
     topic_model.save(
-        str(TOPIC_MODEL_DIR/"bertopic_model"), serialization="pytorch", save_ctfidf=True,
+        str(TOPIC_MODEL_DIR), serialization="pytorch", save_ctfidf=True,
     )
     print(f"  BERTopic model saved to {TOPIC_MODEL_DIR/"bertopic_model"}")
 
