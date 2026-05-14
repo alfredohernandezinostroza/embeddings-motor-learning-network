@@ -8,3 +8,5 @@ __pycache__/
 **/bertopic_model
 
 backups/
+tf_idf_results/
+web_cluster/
